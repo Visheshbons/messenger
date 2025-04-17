@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Messenger</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico">
+</head>
+<body>
+    <%- include('header') %>
+    <main>
+        <h2>Create account</h2>
+        <p>You will need to login using these details, so remember them!</p>
+        <hr>
+        <form action="/newAccount" method="POST">
+            <label for="user">Username:</label><br>
+            <input type="user" id="user" name="user" required><br><br>
+            <label for="pass">Password:</label><br>
+            <input id="pass" name="pass" required></input><br><br>
+            <input type="submit" value="Create Account">
+        </form>
+        <hr>
+    </main>
+    <main>
+        <a href="/login">Login</a>
+    </main>
+    <%- include('footer') %>
+</body>
+</html>
