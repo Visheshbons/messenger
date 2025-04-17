@@ -9,7 +9,7 @@ body {
 }
 
 header {
-    background: #333;
+    background: #205781;
     color: #fff;
     padding: 10px 0;
     text-align: center;
@@ -77,7 +77,7 @@ article h3 {
 footer {
     text-align: center;
     padding: 10px 0;
-    background: #333;
+    background: #205781;
     color: #fff;
     position: fixed;
     bottom: 0;
@@ -91,6 +91,10 @@ footer a {
 
 footer a:hover {
     text-decoration: underline;
+}
+
+.typing-effect, .typed-cursor {
+    color: cadetblue;
 }
 
 /* Form styles */
