@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Messenger</title>
+    <title>Create Account | Messenger</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico">
 </head>
 <body>
     <%- include('header') %>
     <main>
-        <h2>Login</h2>
+        <h2>Create new Account</h2>
         <hr>
-        <form action="/login" method="POST">
+        <form action="/create-account" method="POST">
             <label for="name">Name:</label><br>
             <input type="text" id="Name" name="Name" required><br><br>
             <label for="password">Password:</label><br>
@@ -22,7 +22,7 @@
         <hr>
     </main>
     <main>
-        <a href="/create-account">Create New Account</a>
+        <a href="/login">I Already have an Account</a>
     </main>
     <%- include('footer') %>
 </body>

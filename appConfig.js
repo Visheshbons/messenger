@@ -86,4 +86,4 @@ function dateConversion() {
     });
 };
 
-export { app, port, express, log, err, warn, info, important, green, fs, loadPosts, savePosts, Post, posts, cookieParser, User, user };
+export { app, port, express, log, err, warn, info, important, green, fs, loadPosts, savePosts, Post, posts, cookieParser, loadUsers, saveUser, User, user };

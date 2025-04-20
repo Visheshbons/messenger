@@ -9,6 +9,11 @@
 </head>
 <body>
     <%- include('header') %>
+    <% if (isUser) { %>
+    <main>
+        <h2>Welcome, <%= user %>!</h2>
+    </main>
+    <% } %>
     <main>
         <h2>Latest Posts</h2>
         <hr>

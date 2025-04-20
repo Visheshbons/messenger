@@ -1,5 +1,5 @@
 // Import necessary files
-import { app, port, express, log, err, warn, info, important, green, fs, loadPosts, savePosts, Post, posts, cookieParser, User, user } from './appConfig.js';
+import { app, port, express, log, err, warn, info, important, green, fs, loadPosts, savePosts, Post, posts, cookieParser, loadUsers, saveUser, User, user } from './appConfig.js';
 // Import a profanity filter library
 import { Filter } from 'bad-words';
 
@@ -17,9 +17,19 @@ app.use(cookieParser());
 
 // Middleware to check strikes before accessing /post
 app.get('/', (req, res) => {
-    res.status(200).render("index.ejs", {
-        posts: posts,
-    });
+    if (req.cookies.user) {
+        let currentUser = req.cookies.user
+        res.status(200).render("index.ejs", {
+            posts: posts,
+            isUser: true,
+            user: currentUser,
+        })
+    } else {
+        res.status(200).render('index.ejs', {
+            posts: posts,
+            isUser: false,
+        })
+    };
 });
 
 app.get('/post', (req, res) => {
@@ -29,8 +39,6 @@ app.get('/post', (req, res) => {
 app.post('/post', (req, res) => {
 
     let { title, content, author } = req.body;
-
-    app.redirect("/post");
 
     // Check for missing fields
     if (!title || !content || !author) {
@@ -58,15 +66,24 @@ app.post('/login', (req, res) => {
 
     let { username, password } = req.body;
 
-    if (!username || !password) {
-        return res.status(400).send('Both username and password are required!');
-    };
-
     if (username !== User.user || password !== User.pass) {
         return res.redirect('/create-account');
     } else {
         res.status(200).cookie('user', username).redirect('/');
     };
+});
+
+app.get('/create-account', (req, res) => {
+    res.render('newAccount.ejs')
+});
+
+app.post('/create-account', (req, res) => {
+    let {username, password} = req.body;
+    const newUser = new Post(username, password);
+    user.push(newUser);
+    saveUser(user);
+    info(`New user added: ${username}`);
+    res.status(201).cookie('user', username).redirect('/');
 });
 
 app.get('/myIP', (req, res) => {
@@ -83,5 +100,5 @@ app.use((req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    info(`Server is running on http://localhost:${port}`);
 });

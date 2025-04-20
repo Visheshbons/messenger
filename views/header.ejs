@@ -6,6 +6,9 @@
             <li><a href="/">Home</a></li>
             <li><a href="/post">Post</a></li>
             <li><a href="/login">Login</a></li>
+            <% if (isUser) { %>
+            <li><a href="/message">Message</a></li>
+            <% } %>
         </ul>
     </nav>
 </header>
