@@ -20,24 +20,23 @@ app.get('/', (req, res) => {
     res.status(200).render("index.ejs", {
         posts: posts,
     });
-}).get('/post', (req, res) => {
-    let strikes = parseInt(req.cookies.strikes);
-    if (strikes <= 0) {
-        return res.status(403).send('You have been blocked from accessing this page due to repeated violations.');
-    };
+});
+
+app.get('/post', (req, res) => {
     res.status(200).render("post.ejs");
-}).post('/post', (req, res) => {
+});
+
+app.post('/post', (req, res) => {
 
     let { title, content, author } = req.body;
 
     let strikes = parseInt(req.cookies.strikes);
     if (strikes === undefined) {
-        res.cookie('strikes', Defaltstrikes, { httpOnly: true }).redirect("/post");
+        res.cookie('strikes', Defaltstrikes, { httpOnly: true });
+
+app.redirect("/post");
         return;
     } else {
-        if (strikes <= 0) {
-            return res.status(403).send('You have been blocked from posting due to repeated violations.');
-        };
 
         // Check for missing fields
         if (!title || !content || !author) {
@@ -46,8 +45,6 @@ app.get('/', (req, res) => {
 
         // Check for profanity
         if (filter.isProfane(title) || filter.isProfane(content) || filter.isProfane(author)) {
-            strikes--;
-            res.cookie('strikes', strikes, { httpOnly: true });
 
             if (strikes <= 0) {
                 return res.status(403).send('You have been blocked from posting due to repeated violations.');
@@ -63,16 +60,22 @@ app.get('/', (req, res) => {
     savePosts(posts);
     info(`New post added: ${title}`);
     res.status(201).redirect("/");
-}).get('/myIP', (req, res) => {
+});
+
+app.get('/myIP', (req, res) => {
     const localIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const publicIP = req.socket.remoteAddress;
     res.send(`Your local IP address is: ${localIP}<br>Your public IP address is: ${publicIP}`);
-}).use((req, res) => {
+});
+
+app.use((req, res) => {
     const isCriticalRoute = ["/", "/post"].includes(req.originalUrl);
     res.status(404).send("ERROR_404_PAGE_NOT_FOUND");
     err(`404: ${req.originalUrl}`, isCriticalRoute ? "high" : "low");
     warn("ERR404 catcher activated", "low");
-}).listen(port, () => {
+});
+
+app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
 
