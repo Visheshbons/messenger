@@ -3,28 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | V-Blogger</title>
     <link rel="stylesheet" href="styles.css">
-    <title>Messenger</title>
+    <link rel="icon" href="favicon.ico">
 </head>
 <body>
     <%- include('header') %>
-
     <main>
-        <h1>Welcome to Messenger!</h1>
-        <h2>Where you can message <em><span class="typing-effect"></span></em></h2>
+        <h2>Latest Posts</h2>
+        <hr>
+            <% posts.forEach(function(post) { %>
+                <article>
+                    <h3><%- post.title %></h3>
+                    <p><%- post.content.replace(/\n/g, '<br>') %></p>
+                    <p><small>Posted on (UTC): <span data-post-date="<%- post.date %>"></span> by <%- post.author %></small></p>
+                </article>
+                <hr>
+            <% }); %>
     </main>
-
     <%- include('footer') %>
-
-    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-    <script>
-        var typed = new Typed(".typing-effect", {
-            strings: ['privately', 'to groups', 'in chats', 'anonymously'],
-            typeSpeed: 100,
-            backSpeed: 50,
-            loop: true,
-            smartBackspace: true,
-        });
-    </script>
+    <script src="/dateConversion.js" defer></script>
 </body>
 </html>

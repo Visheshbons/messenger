@@ -93,10 +93,6 @@ footer a:hover {
     text-decoration: underline;
 }
 
-.typing-effect, .typed-cursor {
-    color: cadetblue;
-}
-
 /* Form styles */
 form {
     display: flex;
@@ -192,6 +188,11 @@ form input[type="submit"]:hover {
 
     nav ul {
         display: none;
+    }
+
+    /* Add padding to prevent footer overlap on mobile */
+    body {
+        padding-bottom: 60px; /* Adjust based on footer height */
     }
 }
 
