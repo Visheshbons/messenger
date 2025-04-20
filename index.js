@@ -50,7 +50,7 @@ app.redirect("/post");
                 return res.status(403).send('You have been blocked from posting due to repeated violations.');
             }
 
-            return res.status(400).send(`Your post contains inappropriate language. You have ${strikes} strike(s) remaining.`);
+            return res.status(400).send(`Your post contains inappropriate language.`);
         };
     };
 
@@ -68,6 +68,10 @@ app.get('/myIP', (req, res) => {
     res.send(`Your local IP address is: ${localIP}<br>Your public IP address is: ${publicIP}`);
 });
 
+app.get('/login', (req, res) => {
+    res.send('FEATURE COMING UP SOON!');
+})
+
 app.use((req, res) => {
     const isCriticalRoute = ["/", "/post"].includes(req.originalUrl);
     res.status(404).send("ERROR_404_PAGE_NOT_FOUND");
@@ -78,10 +82,3 @@ app.use((req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
-
-setInterval(() => {
-    fetch("https://diminished-rights.onrender.com")
-        .catch(err => {
-            console.error("Ping failed:", err);
-        });
-}, 60000); // 60,000 milliseconds = 1 minute
