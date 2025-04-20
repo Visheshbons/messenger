@@ -31,6 +31,30 @@ class Post {
 
 let posts = loadPosts();
 
+
+const userFilePath = './users.json';
+
+function loadUsers() {
+    if (fs.existsSync(userFilePath)) {
+        const data = fs.readFileSync(userFilePath, 'utf-8');
+        return JSON.parse(data);
+    }
+    return[];
+}
+
+function saveUser(user) {
+    fs.writeFileSync(userFilePath, JSON.stringify(user, null, 2), 'utf-8');
+}
+
+class User {
+    constructor(username, password) {
+        this.user = username;
+        this.pass = password;
+    };
+};
+
+let user = loadUsers();
+
 // Optimized utility functions and variable declarations
 const app = express();
 const port = process.env.PORT || 3000;
@@ -62,4 +86,4 @@ function dateConversion() {
     });
 };
 
-export { app, port, express, log, err, warn, info, important, green, fs, loadPosts, savePosts, Post, posts, cookieParser };
+export { app, port, express, log, err, warn, info, important, green, fs, loadPosts, savePosts, Post, posts, cookieParser, User, user };

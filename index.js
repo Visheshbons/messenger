@@ -1,5 +1,5 @@
 // Import necessary files
-import { app, port, express, log, err, warn, info, important, green, fs, loadPosts, savePosts, Post, posts, cookieParser } from './appConfig.js';
+import { app, port, express, log, err, warn, info, important, green, fs, loadPosts, savePosts, Post, posts, cookieParser, User, user } from './appConfig.js';
 // Import a profanity filter library
 import { Filter } from 'bad-words';
 
@@ -30,28 +30,16 @@ app.post('/post', (req, res) => {
 
     let { title, content, author } = req.body;
 
-    let strikes = parseInt(req.cookies.strikes);
-    if (strikes === undefined) {
-        res.cookie('strikes', Defaltstrikes, { httpOnly: true });
+    app.redirect("/post");
 
-app.redirect("/post");
-        return;
-    } else {
+    // Check for missing fields
+    if (!title || !content || !author) {
+        return res.status(400).send('Title, content, and author are required!');
+    };
 
-        // Check for missing fields
-        if (!title || !content || !author) {
-            return res.status(400).send('Title, content, and author are required!');
-        };
-
-        // Check for profanity
-        if (filter.isProfane(title) || filter.isProfane(content) || filter.isProfane(author)) {
-
-            if (strikes <= 0) {
-                return res.status(403).send('You have been blocked from posting due to repeated violations.');
-            }
-
-            return res.status(400).send(`Your post contains inappropriate language.`);
-        };
+    // Check for profanity
+    if (filter.isProfane(title) || filter.isProfane(content) || filter.isProfane(author)) {
+    return res.status(400).send(`Your post contains inappropriate language.`);
     };
 
     // Create and save the new post
@@ -62,15 +50,30 @@ app.redirect("/post");
     res.status(201).redirect("/");
 });
 
+app.get('/login', (req, res) => {
+    res.render('login.ejs');
+});
+
+app.post('/login', (req, res) => {
+
+    let { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).send('Both username and password are required!');
+    };
+
+    if (username !== User.user || password !== User.pass) {
+        return res.redirect('/create-account');
+    } else {
+        res.status(200).cookie('user', username).redirect('/');
+    };
+});
+
 app.get('/myIP', (req, res) => {
     const localIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const publicIP = req.socket.remoteAddress;
     res.send(`Your local IP address is: ${localIP}<br>Your public IP address is: ${publicIP}`);
 });
-
-app.get('/login', (req, res) => {
-    res.send('FEATURE COMING UP SOON!');
-})
 
 app.use((req, res) => {
     const isCriticalRoute = ["/", "/post"].includes(req.originalUrl);
